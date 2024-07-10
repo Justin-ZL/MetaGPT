@@ -14,6 +14,7 @@ from metagpt.actions.action import Action
 from metagpt.actions.action_node import ActionNode
 from metagpt.logs import logger
 from metagpt.schema import CodePlanAndChangeContext
+from metagpt.actions.write_code import WriteCode
 
 DEVELOPMENT_PLAN = ActionNode(
     key="Development Plan",
@@ -126,17 +127,13 @@ def add_numbers():
 
 CODE_PLAN_AND_CHANGE_CONTEXT = """
 ## User New Requirements
-{requirement}
-
-## Issue
-{issue}
-
-## PRD
-{prd}
-
-## Design
-{design}
-
+        code_change = WriteCode().run(
+            instruction=INCREMENTAL_CHANGE.instruction,
+            input=CodePlanAndChangeContext(
+                code_plan=code_plan,
+                code=code
+            )
+        )
 ## Task
 {task}
 
