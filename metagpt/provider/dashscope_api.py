@@ -48,6 +48,8 @@ def build_api_arequest(
         request_timeout,
         form,
         resources,
+        additional_param1,
+        additional_param2,
     ) = _get_protocol_params(kwargs)
     task_id = kwargs.pop("task_id", None)
     if api_protocol in [ApiProtocol.HTTP, ApiProtocol.HTTPS]:
