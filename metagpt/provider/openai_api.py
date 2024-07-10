@@ -105,7 +105,7 @@ class OpenAILLM(BaseLLM):
                     if isinstance(chunk.usage, CompletionUsage):
                         usage = chunk.usage
                     else:
-                        usage = CompletionUsage(**chunk.usage)
+                        usage = CompletionUsage(**chunk.usage) if chunk.usage else None
                 elif hasattr(chunk.choices[0], "usage"):
                     # The usage of some services is an attribute of chunk.choices[0], such as Moonshot
                     usage = CompletionUsage(**chunk.choices[0].usage)
