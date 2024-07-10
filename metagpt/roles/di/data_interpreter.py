@@ -184,5 +184,9 @@ class DataInterpreter(Role):
         result, success = await self.execute_code.run(code)
         if success:
             print(result)
-            data_info = DATA_INFO.format(info=result)
+            # Store the result in a file
+            file_name = "data_output.json"
+            with open(file_name, "w") as file:
+                file.write(result)
+            data_info = DATA_INFO.format(info=f"Data stored in {file_name}")
             self.working_memory.add(Message(content=data_info, role="user", cause_by=CheckData))
