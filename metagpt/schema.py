@@ -340,9 +340,10 @@ class AIMessage(Message):
 
 class Task(BaseModel):
     task_id: str = ""
-    dependent_task_ids: list[str] = []  # Tasks prerequisite to this Task
+    dependent_task_ids: List[str] = []  # Tasks prerequisite to this Task
     instruction: str = ""
     task_type: str = ""
+    assignee: str = ""
     code: str = ""
     result: str = ""
     is_success: bool = False
