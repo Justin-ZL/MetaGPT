@@ -5,7 +5,7 @@
 @Author  : alexanderwu
 @File    : action.py
 """
-
+from metagpt.actions.write_code import WriteCode
 from __future__ import annotations
 
 from typing import Optional, Union
@@ -101,6 +101,8 @@ class Action(SerializationMixin, ContextMixin, BaseModel):
 
     async def run(self, *args, **kwargs):
         """Run action"""
+        if isinstance(self, WriteCode):
+            return await self.write_code(*args, **kwargs)
         if self.node:
             return await self._run_action_node(*args, **kwargs)
         raise NotImplementedError("The run method should be implemented in a subclass.")
