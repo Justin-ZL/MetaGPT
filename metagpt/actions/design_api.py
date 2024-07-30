@@ -46,9 +46,21 @@ class WriteDesign(Action):
     )
 
     async def run(self, with_messages: Message, schema: str = None):
-        # Use `git status` to identify which PRD documents have been modified in the `docs/prd` directory.
+        # Use On branch test-fix-1094
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   metagpt/actions/design_api.py
+
+no changes added to commit (use "git add" and/or "git commit -a") to identify which PRD documents have been modified in the  directory.
         changed_prds = self.repo.docs.prd.changed_files
-        # Use `git status` to identify which design documents in the `docs/system_designs` directory have undergone
+        # Use On branch test-fix-1094
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   metagpt/actions/design_api.py
+
+no changes added to commit (use "git add" and/or "git commit -a") to identify which design documents in the  directory have undergone
         # changes.
         changed_system_designs = self.repo.docs.system_design.changed_files
 
@@ -65,7 +77,33 @@ class WriteDesign(Action):
             changed_files.docs[filename] = doc
         if not changed_files.docs:
             logger.info("Nothing has changed.")
-        # Wait until all files under `docs/system_designs/` are processed before sending the publish message,
+        # Wait until all files under  are processed before sending the publish message,
+        # leaving room for global optimization in subsequent steps.
+        return ActionOutput(content=changed_files.model_dump_json(), instruct_content=changed_files)
+            changed_files.docs[filename] = doc
+
+        for filename in changed_system_designs.keys():
+            if filename in changed_files.docs:
+                continue
+            doc = await self._update_system_design(filename=filename)
+            changed_files.docs[filename] = doc
+        if not changed_files.docs:
+            logger.info("Nothing has changed.")
+        # Wait until all files under  are processed before sending the publish message,
+        # leaving room for global optimization in subsequent steps.
+        return ActionOutput(content=changed_files.model_dump_json(), instruct_content=changed_files)
+            changed_files.docs[filename] = doc
+
+        for filename in changed_system_designs.keys():
+            if filename in changed_files.docs:
+                continue
+            doc = await self._update_system_design(filename=filename)
+            changed_files.docs[filename] = doc
+        if not changed_files.docs:
+            logger.info("Nothing has changed.")
+        # Wait until all files under  are processed before sending the publish message,
+        # leaving room for global optimization in subsequent steps.
+        return ActionOutput(content=changed_files.model_dump_json(), instruct_content=changed_files)
         # leaving room for global optimization in subsequent steps.
         return ActionOutput(content=changed_files.model_dump_json(), instruct_content=changed_files)
 
