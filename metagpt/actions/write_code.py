@@ -90,9 +90,9 @@ class WriteCode(Action):
         code = CodeParser.parse_code(block="", text=code_rsp)
         return code
 
-    async def run(self, *args, **kwargs) -> CodingContext:
         bug_feedback = await self.repo.docs.get(filename=BUGFIX_FILENAME)
         coding_context = CodingContext.loads(self.i_context.content)
+        test_doc = await self.repo.test_outputs.get(filename="test_" + coding_context.filename + ".json")
         test_doc = await self.repo.test_outputs.get(filename="test_" + coding_context.filename + ".json")
         requirement_doc = await self.repo.docs.get(filename=REQUIREMENT_FILENAME)
         summary_doc = None
