@@ -183,6 +183,12 @@ class DataInterpreter(Role):
             return
         result, success = await self.execute_code.run(code)
         if success:
+            # Handle large JSON/tabular data efficiently
+            if len(result) > 50000:
+                file_name = f"data_{time.time()}.json"
+                with open(file_name, 'w') as f:
+                    json.dump(result, f)
+                result = f"Data stored in file: {file_name}"
             print(result)
             data_info = DATA_INFO.format(info=result)
             self.working_memory.add(Message(content=data_info, role="user", cause_by=CheckData))
