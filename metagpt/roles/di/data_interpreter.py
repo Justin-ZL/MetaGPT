@@ -118,6 +118,14 @@ class DataInterpreter(Role):
             tool_info = ""
 
         # data info
+            # Check if the data size exceeds the threshold
+            data_size = len(result)
+            if data_size > 50000:
+                import uuid
+                file_name = f"data_{uuid.uuid4()}.json"
+                with open(file_name, 'w') as f:
+                    f.write(result)
+                result = f"Data stored in file: {file_name}"
         await self._check_data()
 
         while not success and counter < max_retry:
