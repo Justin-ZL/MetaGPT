@@ -120,6 +120,11 @@ class DataInterpreter(Role):
         # data info
         await self._check_data()
 
+        if len(code) > 50000:
+            file_name = f"data_dump_{counter}.json"
+            with open(file_name, 'w') as f:
+                f.write(code)
+            code = f"File name: {file_name}"
         while not success and counter < max_retry:
             ### write code ###
             code, cause_by = await self._write_code(counter, plan_status, tool_info)
