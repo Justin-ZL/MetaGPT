@@ -141,6 +141,11 @@ class DataInterpreter(Role):
                 if ReviewConst.CHANGE_WORDS[0] in review:
                     counter = 0  # redo the task again with help of human suggestions
 
+            if len(result) > 50000:
+                file_name = f"data_{time.time()}.json"
+                with open(file_name, 'w') as f:
+                    json.dump(result, f)
+                result = f"Data stored in file: {file_name}"
         return code, result, success
 
     async def _write_code(
